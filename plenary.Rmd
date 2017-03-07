@@ -1,0 +1,5 @@
+---
+title: "Plenary Talk"
+---
+
+Slides for the plenary talk, titled "Kinematic Data in Motor Control Experiments", can be found [here](http://jeffgoldsmith.com/Presentations/20170227_HetFPCA.html#1).

@@ -1,0 +1,24 @@
+---
+title: "Short Course"
+output:
+  html_document: 
+    code_folding: hide
+    toc: true
+    toc_float: true
+---
+
+### Overview
+
+
+#### Methods for variable selection
+
+
+#### Variable selection in functional data analysis
+
+
+
+### Scalar-on-function regression
+
+
+
+### Function-on-scalar regression

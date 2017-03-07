@@ -1,0 +1,19 @@
+name: "IWAFDA"
+output_dir: "."
+navbar:
+  title: "IWAFDA 2017"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Plenary Talk"
+      href: plenary.html
+    - text: "Short Course"
+      href: shortcourse.html
+  right:
+    - text: "About"
+      href: about.html
+    - icon: fa-github fa-lg
+      href: https://example.com
+output:
+  html_document:
+    theme: flatly

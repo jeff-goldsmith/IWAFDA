@@ -1,0 +1,7 @@
+---
+title: "About This Website"
+---
+
+This is an [R Markdown website](http://rmarkdown.rstudio.com/rmarkdown_websites.html), created by [Jeff Goldsmith](http://jeffgoldsmith.com) for [IWAFDA](http://www.est.uc3m.es/iwafda2/).
+
+
