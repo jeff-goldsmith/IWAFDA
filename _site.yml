@@ -9,6 +9,8 @@ navbar:
       href: plenary.html
     - text: "Short Course"
       href: shortcourse.html
+    - text: "Data and Code"
+      href: data.html
   right:
     - text: "About"
       href: about.html
