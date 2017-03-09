@@ -21,7 +21,7 @@ Diffusion tensor imaging (DTI) tractography is a magnetic resonance imaging (MRI
 
 For each white-matter tract, DTI provides us several measures describing the diffusivity of water. One example of these measures is parallel diffusivity, which is the diffusivity along the principal axis of the tract. Parallel diffusivity is recorded at many locations along the tract, so that for each tract we have a continuous profile or function. 
 
-Several tracts are included in the DTI dataset, and each tract has profiles for several measures. Also included are demographic variables, results for cognitive tests, and indicators of disease status (multiple sclerosis vs healthy control). The data can be downloaded [here](./DataCode/DTI.RDA)
+Several tracts are included in the DTI dataset, and each tract has profiles for several measures. Also included are demographic variables, results for cognitive tests, and indicators of disease status (multiple sclerosis vs healthy control). The data can be downloaded [here](./DataCode/DTI.RDA).
 
 ### Sugar Data
 
@@ -31,7 +31,7 @@ In chemometrics there are often function-like absorbance or emission spectra giv
 
 268 samples of sugar were dissolved and the solution was measured spectrofluorometrically. For every sample the emission spectra from 275–560 nm were measured in 0.5 nm intervals (i.e., at 571 wavelengths) at seven excitation wavelengths: 230, 240, 255, 290, 305, 325, and 340 nm. In addition, there are laboratory determinations of the quality of the sugar given, such as ash content (in percentage). Ash content measures the amount of inorganic impurities in the refined sugar, cf. Bro (1999). The aim of the analysis is to study the association between the ash content and the fluorescence spectra.
 
-The original data can be downloaded [here](http://www.models.life.ku.dk/sugar_process), and a processed version is available [here](./DataCode/Sugar.RDA)
+The original data can be downloaded [here](http://www.models.life.ku.dk/sugar_process), and a processed version is available [here](./DataCode/Sugar.RDA).
 
 ### Activity Data
 
