@@ -7,18 +7,81 @@ output:
     toc_float: true
 ---
 
-### Overview
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE
+)
+```
+
+```{r setup}
+library(tidyverse)
+library(refund)
+library(refund.shiny)
+```
+
+This page contains a combination of traditional lecture materials (slides) and code demonstrating the relevant methods. The short course will proceed by working through both. We will use several recent packages in our examples; see the [About](./About.html) page for information about the package versions.
+
+## Overview of variable selection
+
+### Methods for variable selection
+
+(placeholder for slides talking about penalization, group penalization, and bayesian variable selection methods)
+
+### Practical examples
+
+(code and text for group penalization, especially MCP)
 
 
-#### Methods for variable selection
+## Scalar-on-function regression
+
+In this section we'll use the [DTI dataset](./Data.html) to motivate the scalar-on-function regression model and variable selection in this context. Our main outcome of interest is multiple sclerosis case status, and the possible predictors are tract profiles from several major white matter structures. Below we plot profiles for one tract colored by MS case status.
+
+```{r DTI_explore, eval=FALSE}
+load("./DataCode/DTI.RDA")
+
+as_refundObj(CCA_ani) %>% 
+	left_join(select(outcome_data, id, case)) %>%
+	ggplot(aes(x = index, y = value, group = id, color = case)) + geom_path(alpha = .5)
+```
+
+### Methods for variable selection
+
+Slides below review scalar-on-function regression and introduce the ideas for variable selection in this context.
+
+(placeholder for slides: review sofr using fpca, splines; variable selection using group penalties; extensions to generalized sofr; discuss challenges, including sparse or incomplete data, smoothness constraints, and scaling)
+
+### Practical example
+
+(code and text for sofr in the DTI example; include Jan's function and results)
+
+### Try it yourself!
+
+(some intro to the sugar data)
 
 
-#### Variable selection in functional data analysis
+
+## Function-on-scalar regression
+
+In this section we'll use the [Activity data](./Data.html) to motivate the function-on-scalar regression model and variable selection in this context. Our main outcome of interest is the observed physical activity profile, with predictors including age, sex, and season. Below we plot activity profiles colored by sex.
 
 
+### Methods for variable selection
 
-### Scalar-on-function regression
+Slides below review function-on-scalar regression and introduce the ideas for variable selection in this context.
+
+(placeholder for slides: review fosr using splines; variable selection using group penalties; correlated errors (GLS or Bayes methods); discuss challenges, including sparse or incomplete data, smoothness constraints, and scaling)
+
+### Practical example
+
+(code and text for OLS-based fosr in the accelerometer example; include Yakuan's function and results)
 
 
+### Try it yourself!
 
-### Function-on-scalar regression
+Using the DTI data with several predictors. 
+
+
+## Other topics
+
+Time permitting? VBVS in concurrent model. Prediction more generally (ensemble prediction)
+

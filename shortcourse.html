@@ -328,20 +328,72 @@ div.tocify {
 </div>
 
 
-<div id="overview" class="section level3">
-<h3>Overview</h3>
-<div id="methods-for-variable-selection" class="section level4">
-<h4>Methods for variable selection</h4>
+<pre class="r"><code>library(tidyverse)
+## Loading tidyverse: ggplot2
+## Loading tidyverse: tibble
+## Loading tidyverse: tidyr
+## Loading tidyverse: readr
+## Loading tidyverse: purrr
+## Loading tidyverse: dplyr
+## Conflicts with tidy packages ----------------------------------------------
+## filter(): dplyr, stats
+## lag():    dplyr, stats
+library(refund)
+library(refund.shiny)</code></pre>
+<p>This page contains a combination of traditional lecture materials (slides) and code demonstrating the relevant methods. The short course will proceed by working through both. We will use several recent packages in our examples; see the <a href="./About.html">About</a> page for information about the package versions.</p>
+<div id="overview-of-variable-selection" class="section level2">
+<h2>Overview of variable selection</h2>
+<div id="methods-for-variable-selection" class="section level3">
+<h3>Methods for variable selection</h3>
+<p>(placeholder for slides talking about penalization, group penalization, and bayesian variable selection methods)</p>
 </div>
-<div id="variable-selection-in-functional-data-analysis" class="section level4">
-<h4>Variable selection in functional data analysis</h4>
+<div id="practical-examples" class="section level3">
+<h3>Practical examples</h3>
+<p>(code and text for group penalization, especially MCP)</p>
 </div>
 </div>
-<div id="scalar-on-function-regression" class="section level3">
-<h3>Scalar-on-function regression</h3>
+<div id="scalar-on-function-regression" class="section level2">
+<h2>Scalar-on-function regression</h2>
+<p>In this section we’ll use the <a href="./Data.html">DTI dataset</a> to motivate the scalar-on-function regression model and variable selection in this context. Our main outcome of interest is multiple sclerosis case status, and the possible predictors are tract profiles from several major white matter structures. Below we plot profiles for one tract colored by MS case status.</p>
+<pre class="r"><code>load(&quot;./DataCode/DTI.RDA&quot;)
+
+as_refundObj(CCA_ani) %&gt;% 
+    left_join(select(outcome_data, id, case)) %&gt;%
+    ggplot(aes(x = index, y = value, group = id, color = case)) + geom_path(alpha = .5)</code></pre>
+<div id="methods-for-variable-selection-1" class="section level3">
+<h3>Methods for variable selection</h3>
+<p>Slides below review scalar-on-function regression and introduce the ideas for variable selection in this context.</p>
+<p>(placeholder for slides: review sofr using fpca, splines; variable selection using group penalties; extensions to generalized sofr; discuss challenges, including sparse or incomplete data, smoothness constraints, and scaling)</p>
 </div>
-<div id="function-on-scalar-regression" class="section level3">
-<h3>Function-on-scalar regression</h3>
+<div id="practical-example" class="section level3">
+<h3>Practical example</h3>
+<p>(code and text for sofr in the DTI example; include Jan’s function and results)</p>
+</div>
+<div id="try-it-yourself" class="section level3">
+<h3>Try it yourself!</h3>
+<p>(some intro to the sugar data)</p>
+</div>
+</div>
+<div id="function-on-scalar-regression" class="section level2">
+<h2>Function-on-scalar regression</h2>
+<p>In this section we’ll use the <a href="./Data.html">Activity data</a> to motivate the function-on-scalar regression model and variable selection in this context. Our main outcome of interest is the observed physical activity profile, with predictors including age, sex, and season. Below we plot activity profiles colored by sex.</p>
+<div id="methods-for-variable-selection-2" class="section level3">
+<h3>Methods for variable selection</h3>
+<p>Slides below review function-on-scalar regression and introduce the ideas for variable selection in this context.</p>
+<p>(placeholder for slides: review fosr using splines; variable selection using group penalties; correlated errors (GLS or Bayes methods); discuss challenges, including sparse or incomplete data, smoothness constraints, and scaling)</p>
+</div>
+<div id="practical-example-1" class="section level3">
+<h3>Practical example</h3>
+<p>(code and text for OLS-based fosr in the accelerometer example; include Yakuan’s function and results)</p>
+</div>
+<div id="try-it-yourself-1" class="section level3">
+<h3>Try it yourself!</h3>
+<p>Using the DTI data with several predictors.</p>
+</div>
+</div>
+<div id="other-topics" class="section level2">
+<h2>Other topics</h2>
+<p>Time permitting? VBVS in concurrent model. Prediction more generally (ensemble prediction)</p>
 </div>
 
 
