@@ -13,13 +13,13 @@ knitr::opts_chunk$set(
 )
 ```
 
+This page contains a combination of traditional lecture materials (slides) and code demonstrating the relevant methods. The short course will proceed by working through both. We will use several recent packages in our examples; see the [About](./About.html) page for information about the package versions.
+
 ```{r setup}
 library(tidyverse)
 library(refund)
 library(refund.shiny)
 ```
-
-This page contains a combination of traditional lecture materials (slides) and code demonstrating the relevant methods. The short course will proceed by working through both. We will use several recent packages in our examples; see the [About](./About.html) page for information about the package versions.
 
 ## Overview of variable selection
 
@@ -36,7 +36,7 @@ This page contains a combination of traditional lecture materials (slides) and c
 
 In this section we'll use the [DTI dataset](./Data.html) to motivate the scalar-on-function regression model and variable selection in this context. Our main outcome of interest is multiple sclerosis case status, and the possible predictors are tract profiles from several major white matter structures. Below we plot profiles for one tract colored by MS case status.
 
-```{r DTI_explore, eval=FALSE}
+```{r DTI_explore, eval = TRUE}
 load("./DataCode/DTI.RDA")
 
 as_refundObj(CCA_ani) %>% 

@@ -328,6 +328,7 @@ div.tocify {
 </div>
 
 
+<p>This page contains a combination of traditional lecture materials (slides) and code demonstrating the relevant methods. The short course will proceed by working through both. We will use several recent packages in our examples; see the <a href="./About.html">About</a> page for information about the package versions.</p>
 <pre class="r"><code>library(tidyverse)
 ## Loading tidyverse: ggplot2
 ## Loading tidyverse: tibble
@@ -340,7 +341,6 @@ div.tocify {
 ## lag():    dplyr, stats
 library(refund)
 library(refund.shiny)</code></pre>
-<p>This page contains a combination of traditional lecture materials (slides) and code demonstrating the relevant methods. The short course will proceed by working through both. We will use several recent packages in our examples; see the <a href="./About.html">About</a> page for information about the package versions.</p>
 <div id="overview-of-variable-selection" class="section level2">
 <h2>Overview of variable selection</h2>
 <div id="methods-for-variable-selection" class="section level3">
@@ -359,7 +359,9 @@ library(refund.shiny)</code></pre>
 
 as_refundObj(CCA_ani) %&gt;% 
     left_join(select(outcome_data, id, case)) %&gt;%
-    ggplot(aes(x = index, y = value, group = id, color = case)) + geom_path(alpha = .5)</code></pre>
+    ggplot(aes(x = index, y = value, group = id, color = case)) + geom_path(alpha = .5)
+## Joining, by = &quot;id&quot;</code></pre>
+<p><img src="shortcourse_files/figure-html/DTI_explore-1.png" width="672" /></p>
 <div id="methods-for-variable-selection-1" class="section level3">
 <h3>Methods for variable selection</h3>
 <p>Slides below review scalar-on-function regression and introduce the ideas for variable selection in this context.</p>
