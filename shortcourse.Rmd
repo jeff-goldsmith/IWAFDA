@@ -17,6 +17,7 @@ This page contains a combination of traditional lecture materials (slides) and c
 
 ```{r setup}
 library(tidyverse)
+library(grpreg)
 library(refund)
 library(refund.shiny)
 ```
