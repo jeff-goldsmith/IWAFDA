@@ -330,17 +330,39 @@ div.tocify {
 
 <p>This page contains a combination of traditional lecture materials (slides) and code demonstrating the relevant methods. The short course will proceed by working through both. We will use several recent packages in our examples; see the <a href="./About.html">About</a> page for information about the package versions.</p>
 <pre class="r"><code>library(tidyverse)
+## Warning: package &#39;tidyverse&#39; was built under R version 3.2.5
 ## Loading tidyverse: ggplot2
 ## Loading tidyverse: tibble
 ## Loading tidyverse: tidyr
 ## Loading tidyverse: readr
 ## Loading tidyverse: purrr
 ## Loading tidyverse: dplyr
+## Warning: package &#39;ggplot2&#39; was built under R version 3.2.5
+## Warning: package &#39;tibble&#39; was built under R version 3.2.5
+## Warning: package &#39;tidyr&#39; was built under R version 3.2.5
+## Warning: package &#39;purrr&#39; was built under R version 3.2.5
+## Warning: package &#39;dplyr&#39; was built under R version 3.2.5
 ## Conflicts with tidy packages ----------------------------------------------
 ## filter(): dplyr, stats
 ## lag():    dplyr, stats
+library(grpreg)
+## Warning: package &#39;grpreg&#39; was built under R version 3.2.5
+## Loading required package: Matrix
+## 
+## Attaching package: &#39;Matrix&#39;
+## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     expand
+## 
+## Attaching package: &#39;grpreg&#39;
+## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select
+library(splines)
 library(refund)
-library(refund.shiny)</code></pre>
+## Warning: package &#39;refund&#39; was built under R version 3.2.5
+library(refund.shiny)
+## Warning: package &#39;refund.shiny&#39; was built under R version 3.2.5</code></pre>
 <div id="overview-of-variable-selection" class="section level2">
 <h2>Overview of variable selection</h2>
 <div id="methods-for-variable-selection" class="section level3">
@@ -358,7 +380,7 @@ library(refund.shiny)</code></pre>
 <pre class="r"><code>load(&quot;./DataCode/DTI.RDA&quot;)
 
 as_refundObj(CCA_ani) %&gt;% 
-    left_join(select(outcome_data, id, case)) %&gt;%
+    left_join(dplyr::select(outcome_data, id, case)) %&gt;%
     ggplot(aes(x = index, y = value, group = id, color = case)) + geom_path(alpha = .5)
 ## Joining, by = &quot;id&quot;</code></pre>
 <p><img src="shortcourse_files/figure-html/DTI_explore-1.png" width="672" /></p>
@@ -369,7 +391,43 @@ as_refundObj(CCA_ani) %&gt;%
 </div>
 <div id="practical-example" class="section level3">
 <h3>Practical example</h3>
-<p>(code and text for sofr in the DTI example; include Jan’s function and results)</p>
+<p>Some DTI profiles are incomplete; we can use FPCA to obtain estimates over a complete domain.</p>
+<pre class="r"><code>fpca_ex = fpca.sc(CSTL_ani)
+
+bind_rows(as_refundObj(fpca_ex$Y) %&gt;% mutate(type = &quot;Observed&quot;),
+                    as_refundObj(fpca_ex$Yhat) %&gt;% mutate(type = &quot;Fitted&quot;)) %&gt;%
+    ggplot(aes(x = index, y = value, group = id)) + geom_path(alpha = .5) +
+        facet_grid(~type)</code></pre>
+<p><img src="shortcourse_files/figure-html/DTI_sofr_varselect-1.png" width="672" /></p>
+<p>(Incidentally, the <code>refund.shiny</code> package has helpful tools for visualizing the results of an FPCA analysis).</p>
+<pre class="r"><code>plot_shiny(fpca_ex)</code></pre>
+<p>Several steps are needed to organize the functional predictors to fit the scalar-on-function regression with variable selection. In particular, for this dataset we use FPCA on each predictor; scale the resulting reconstructions; and combine with a spline basis. The code below implements these steps and produces a list containing the result for each predictor.</p>
+<pre class="r"><code>predictor_names = paste(rep(c(&quot;CSTR&quot;, &quot;CSTL&quot;, &quot;CCA&quot;, &quot;OPRL&quot;, &quot;OPRR&quot;), each = 6), 
+                                    rep(c(&quot;ani&quot;, &quot;l0&quot;, &quot;lt&quot;, &quot;md&quot;, &quot;mtr&quot;, &quot;t2&quot;), 5), 
+                                    sep = &quot;_&quot;)
+
+preprocess_fd_for_sofr = function(data_matrix){
+    
+    index = seq(0, 1, length = dim(data_matrix)[2])
+    basis = splines::bs(index, df = 10, intercept = TRUE)
+    int_weights = rep(1 / dim(data_matrix)[2], dim(data_matrix)[2])
+
+    fitted_vals = fpca.sc(data_matrix, npc = 10)$Yhat
+    scaled_fv = scale(fitted_vals)
+    
+    design_mat = scaled_fv %*% diag(int_weights) %*% basis
+}
+
+processed_predictors = lapply(predictor_names, function(u) {
+        data_mat_cur = get(u)
+        preprocess_fd_for_sofr(data_mat_cur)
+    })</code></pre>
+<p>Given the processed predictors, we construct the design matrix and fit the model using the group variable selection illustrated previously.</p>
+<pre class="r"><code>y = outcome_data$case
+X = do.call(cbind, processed_predictors)
+group = rep(1:30, each = 10)
+
+sofr_fit = grpreg(X = X, y = y, group = group, family = &quot;binomial&quot;, penalty = &quot;grLasso&quot;)</code></pre>
 </div>
 <div id="try-it-yourself" class="section level3">
 <h3>Try it yourself!</h3>

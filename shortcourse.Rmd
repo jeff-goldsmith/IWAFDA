@@ -18,6 +18,7 @@ This page contains a combination of traditional lecture materials (slides) and c
 ```{r setup}
 library(tidyverse)
 library(grpreg)
+library(splines)
 library(refund)
 library(refund.shiny)
 ```
@@ -41,7 +42,7 @@ In this section we'll use the [DTI dataset](./Data.html) to motivate the scalar-
 load("./DataCode/DTI.RDA")
 
 as_refundObj(CCA_ani) %>% 
-	left_join(select(outcome_data, id, case)) %>%
+	left_join(dplyr::select(outcome_data, id, case)) %>%
 	ggplot(aes(x = index, y = value, group = id, color = case)) + geom_path(alpha = .5)
 ```
 
@@ -53,7 +54,60 @@ Slides below review scalar-on-function regression and introduce the ideas for va
 
 ### Practical example
 
-(code and text for sofr in the DTI example; include Jan's function and results)
+Some DTI profiles are incomplete; we can use FPCA to obtain estimates over a complete domain.
+
+```{r DTI_sofr_varselect, eval = TRUE}
+fpca_ex = fpca.sc(CSTL_ani)
+
+bind_rows(as_refundObj(fpca_ex$Y) %>% mutate(type = "Observed"),
+					as_refundObj(fpca_ex$Yhat) %>% mutate(type = "Fitted")) %>%
+	ggplot(aes(x = index, y = value, group = id)) + geom_path(alpha = .5) +
+		facet_grid(~type)
+```
+
+(Incidentally, the `refund.shiny` package has helpful tools for visualizing the results of an FPCA analysis).
+
+```{r plot_shiny_fpca, eval = FALSE}
+plot_shiny(fpca_ex)
+```
+
+Several steps are needed to organize the functional predictors to fit the scalar-on-function regression with variable selection. In particular, for this dataset we use FPCA on each predictor; scale the resulting reconstructions; and combine with a spline basis. The code below implements these steps and produces a list containing the result for each predictor.
+
+```{r DTI_preprocess_funcs, eval = TRUE}
+predictor_names = paste(rep(c("CSTR", "CSTL", "CCA", "OPRL", "OPRR"), each = 6), 
+									rep(c("ani", "l0", "lt", "md", "mtr", "t2"), 5), 
+									sep = "_")
+
+preprocess_fd_for_sofr = function(data_matrix){
+	
+	index = seq(0, 1, length = dim(data_matrix)[2])
+	basis = splines::bs(index, df = 10, intercept = TRUE)
+	int_weights = rep(1 / dim(data_matrix)[2], dim(data_matrix)[2])
+
+	fitted_vals = fpca.sc(data_matrix, npc = 10)$Yhat
+	scaled_fv = scale(fitted_vals)
+	
+	design_mat = scaled_fv %*% diag(int_weights) %*% basis
+}
+
+processed_predictors = lapply(predictor_names, function(u) {
+		data_mat_cur = get(u)
+		preprocess_fd_for_sofr(data_mat_cur)
+	})
+```
+
+Given the processed predictors, we construct the design matrix and fit the model using the group variable selection illustrated previously.
+
+```{r DTI_sofr_fit, eval = TRUE}
+y = outcome_data$case
+X = do.call(cbind, processed_predictors)
+group = rep(1:30, each = 10)
+
+sofr_fit = grpreg(X = X, y = y, group = group, family = "binomial", penalty = "grLasso")
+```
+
+(placeholder -- add CV, compare lasso to mcp, show predictors, compare to a usual fit)
+
 
 ### Try it yourself!
 
