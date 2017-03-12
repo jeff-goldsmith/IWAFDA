@@ -111,7 +111,19 @@ sofr_fit = grpreg(X = X, y = y, group = group, family = "binomial", penalty = "g
 
 ### Try it yourself!
 
-(some intro to the sugar data)
+Another example for variable selection in the scalar-on-function regression setting is the [Sugar dataset](./DataCode.html). In this example, predicting the ash content of a sugar sample based on emission spectra at several wavelengths (and on the derivatives of these spectra) is of interest. 
+
+Below we plot the spectra at a single wavelength colored by ash content. 
+
+```{r Sugar_explore, eval = TRUE}
+load("./DataCode/Sugar.RDA")
+
+as_refundObj(wave_230) %>% 
+	left_join(dplyr::select(outcome_data, id, ash)) %>%
+	ggplot(aes(x = index, y = value, group = id, color = ash)) + geom_path(alpha = .5)
+```
+
+You're encouraged to try the preceeding variable selection tools on these data, and to extend them in directions that interest you.
 
 
 
