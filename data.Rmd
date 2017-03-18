@@ -41,7 +41,7 @@ Accelerometers have become an appealing alternative to self-report techniques fo
 
 Study participants were recruited from 50 Head Start centers in northern Manhattan, the Bronx, and Brooklyn, in neighborhoods with high rates of pediatric asthma. We used a survey instrument to collect data on the child’s age, race, sex, asthma symptoms and other medical conditions, birth order and family-related factors, and features of the home environment.  Field staff measured the child’s height, weight, and skin-fold thicknesses The staff then attached the accelerometer to the child’s non-dominant wrist with a hospital band. We obtain $y_i(t)$ by averaging, for each $t$ separately, across the six days of observation for each child. Additionally, we aggregate into 10 minute epochs.
 
-For data confidentiality reasons, we will work with a simulated dataset. These data are simulated to mimic real data: they use realistic covariates, coefficients based on a fitted model, and residuals based on those in a full analysis. 
+For data confidentiality reasons, we will work with a simulated dataset. These data are simulated to mimic real data: they use realistic covariates, coefficients based on a fitted model, and residuals based on those in a full analysis. The activity data can be found [here](./DataCode/Activity.RDA).
 
 ## Additional code
 
