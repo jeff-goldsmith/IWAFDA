@@ -378,14 +378,13 @@ bind_rows(as_refundObj(fpca_ex$Y) %&gt;% mutate(type = &quot;Observed&quot;),
 <p>(Incidentally, the <code>refund.shiny</code> package has helpful tools for visualizing the results of an FPCA analysis).</p>
 <pre class="r"><code>plot_shiny(fpca_ex)</code></pre>
 <p>Several steps are needed to organize the functional predictors to fit the scalar-on-function regression with variable selection. In particular, for this dataset we use FPCA on each predictor; scale the resulting reconstructions; and combine with a spline basis. The code below implements these steps and produces a list containing the result for each predictor.</p>
-<pre class="r"><code>predictor_names = paste(rep(c(&quot;CSTR&quot;, &quot;CSTL&quot;, &quot;CCA&quot;, &quot;OPRL&quot;, &quot;OPRR&quot;), each = 6), 
-                                    rep(c(&quot;ani&quot;, &quot;l0&quot;, &quot;lt&quot;, &quot;md&quot;, &quot;mtr&quot;, &quot;t2&quot;), 5), 
-                                    sep = &quot;_&quot;)
-
-preprocess_fd_for_sofr = function(data_matrix){
-    
+<pre class="r"><code>basis_create = function(data_matrix) {
     index = seq(0, 1, length = dim(data_matrix)[2])
     basis = splines::bs(index, df = 10, intercept = TRUE)
+}
+
+preprocess_fd_for_sofr = function(data_matrix, basis){
+    
     int_weights = rep(1 / dim(data_matrix)[2], dim(data_matrix)[2])
 
     fitted_vals = fpca.sc(data_matrix, npc = 10)$Yhat
@@ -394,17 +393,43 @@ preprocess_fd_for_sofr = function(data_matrix){
     design_mat = scaled_fv %*% diag(int_weights) %*% basis
 }
 
-processed_predictors = lapply(predictor_names, function(u) {
-        data_mat_cur = get(u)
-        preprocess_fd_for_sofr(data_mat_cur)
-    })</code></pre>
+predictor_names = paste(rep(c(&quot;CSTR&quot;, &quot;CSTL&quot;, &quot;CCA&quot;, &quot;OPRL&quot;, &quot;OPRR&quot;), each = 6), 
+                                    rep(c(&quot;ani&quot;, &quot;l0&quot;, &quot;lt&quot;, &quot;md&quot;, &quot;mtr&quot;, &quot;t2&quot;), 5), 
+                                    sep = &quot;_&quot;)
+
+predictors = map(predictor_names, get)
+predictor_basis = map(predictors, basis_create)
+
+processed_predictors = map2(predictors, predictor_basis, preprocess_fd_for_sofr)</code></pre>
 <p>Given the processed predictors, we construct the design matrix and fit the model using the group variable selection illustrated previously.</p>
 <pre class="r"><code>y = outcome_data$case
 X = do.call(cbind, processed_predictors)
 group = rep(1:30, each = 10)
 
 sofr_fit = grpreg(X = X, y = y, group = group, family = &quot;binomial&quot;, penalty = &quot;grLasso&quot;)</code></pre>
-<p>(placeholder – add CV, compare lasso to mcp, show predictors, compare to a usual fit)</p>
+<p>The panels below show the results of the preceding model fit for two values of the tuning parameter. For each, estimated spline coefficients are combined with the spline basis to produce the coefficient function.</p>
+<pre class="r"><code>single_coef_construct = function(coefs, basis, name) {
+    coef_data_frame = data.frame(
+      value = basis %*% coefs,
+      index = seq(0, 1, length = dim(basis)[1]),
+      id = name,
+      stringsAsFactors = FALSE
+    )
+}
+    
+coef_construct = function(lambda_index) {
+    pmap(list(split(sofr_fit$beta[-1, lambda_index], group), 
+                                                predictor_basis, 
+                                                predictor_names), 
+                                     single_coef_construct) %&gt;%
+    bind_rows %&gt;%
+    mutate(lambda = round(sofr_fit$lambda[lambda_index], 3))
+}
+
+bind_rows(coef_construct(30), coef_construct(90)) %&gt;%
+    ggplot(aes(x = index, y = value, group = id)) + geom_path() + 
+    facet_grid(~lambda)</code></pre>
+<p><img src="shortcourse_sofr_files/figure-html/DTI_sofr_res-1.png" width="672" /></p>
 </div>
 <div id="try-it-yourself" class="section level2">
 <h2>Try it yourself!</h2>

@@ -61,14 +61,13 @@ plot_shiny(fpca_ex)
 Several steps are needed to organize the functional predictors to fit the scalar-on-function regression with variable selection. In particular, for this dataset we use FPCA on each predictor; scale the resulting reconstructions; and combine with a spline basis. The code below implements these steps and produces a list containing the result for each predictor.
 
 ```{r DTI_preprocess_funcs, eval = TRUE}
-predictor_names = paste(rep(c("CSTR", "CSTL", "CCA", "OPRL", "OPRR"), each = 6), 
-									rep(c("ani", "l0", "lt", "md", "mtr", "t2"), 5), 
-									sep = "_")
-
-preprocess_fd_for_sofr = function(data_matrix){
-	
+basis_create = function(data_matrix) {
 	index = seq(0, 1, length = dim(data_matrix)[2])
 	basis = splines::bs(index, df = 10, intercept = TRUE)
+}
+
+preprocess_fd_for_sofr = function(data_matrix, basis){
+	
 	int_weights = rep(1 / dim(data_matrix)[2], dim(data_matrix)[2])
 
 	fitted_vals = fpca.sc(data_matrix, npc = 10)$Yhat
@@ -77,10 +76,14 @@ preprocess_fd_for_sofr = function(data_matrix){
 	design_mat = scaled_fv %*% diag(int_weights) %*% basis
 }
 
-processed_predictors = lapply(predictor_names, function(u) {
-		data_mat_cur = get(u)
-		preprocess_fd_for_sofr(data_mat_cur)
-	})
+predictor_names = paste(rep(c("CSTR", "CSTL", "CCA", "OPRL", "OPRR"), each = 6), 
+									rep(c("ani", "l0", "lt", "md", "mtr", "t2"), 5), 
+									sep = "_")
+
+predictors = map(predictor_names, get)
+predictor_basis = map(predictors, basis_create)
+
+processed_predictors = map2(predictors, predictor_basis, preprocess_fd_for_sofr)
 ```
 
 Given the processed predictors, we construct the design matrix and fit the model using the group variable selection illustrated previously.
@@ -93,7 +96,31 @@ group = rep(1:30, each = 10)
 sofr_fit = grpreg(X = X, y = y, group = group, family = "binomial", penalty = "grLasso")
 ```
 
-(placeholder -- add CV, compare lasso to mcp, show predictors, compare to a usual fit)
+The panels below show the results of the preceding model fit for two values of the tuning parameter. For each, estimated spline coefficients are combined with the spline basis to produce the coefficient function.
+
+```{r DTI_sofr_res, eval = TRUE}
+single_coef_construct = function(coefs, basis, name) {
+	coef_data_frame = data.frame(
+	  value = basis %*% coefs,
+	  index = seq(0, 1, length = dim(basis)[1]),
+	  id = name,
+	  stringsAsFactors = FALSE
+	)
+}
+	
+coef_construct = function(lambda_index) {
+	arg_list = list(split(sofr_fit$beta[-1, lambda_index], group), 
+									predictor_basis, 
+									predictor_names)
+	pmap(arg_list, single_coef_construct) %>%
+	bind_rows %>%
+	mutate(lambda = round(sofr_fit$lambda[lambda_index], 3))
+}
+
+bind_rows(coef_construct(30), coef_construct(90)) %>%
+	ggplot(aes(x = index, y = value, group = id)) + geom_path() + 
+	facet_grid(~lambda)
+```
 
 
 ## Try it yourself!
