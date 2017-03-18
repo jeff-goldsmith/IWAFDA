@@ -11,7 +11,7 @@
 
 
 
-<title>Data and Code</title>
+<title>Review of Variable Selection</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -341,44 +341,24 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data and Code</h1>
+<h1 class="title toc-ignore">Review of Variable Selection</h1>
 
 </div>
 
 
-<p>Several datasets and some supporting code will be used in the short course. They are below.</p>
-<div id="datasets" class="section level2">
-<h2>Datasets</h2>
-<p>The following datasets are used as examples.</p>
-<div id="dti-data" class="section level3">
-<h3>DTI Data</h3>
-<p>The data description below draws heavily from <a href="http://www.tandfonline.com/doi/abs/10.1198/jcgs.2010.10007">Goldsmith et al</a> 2011:</p>
-<p>Diffusion tensor imaging (DTI) tractography is a magnetic resonance imaging (MRI) technique that allows the study of white-matter tracts by measuring the diffusivity of water in the brain: in white-matter tracts, water diffuses anisotropically in the direction of the tract, while elsewhere water diffuses isotropically. Using measurements of diffusivity along several gradients, DTI can provide relatively detailed images of white-matter anatomy in the brain.</p>
-<p>For each white-matter tract, DTI provides us several measures describing the diffusivity of water. One example of these measures is parallel diffusivity, which is the diffusivity along the principal axis of the tract. Parallel diffusivity is recorded at many locations along the tract, so that for each tract we have a continuous profile or function.</p>
-<p>Several tracts are included in the DTI dataset, and each tract has profiles for several measures. Also included are demographic variables, results for cognitive tests, and indicators of disease status (multiple sclerosis vs healthy control). The data can be downloaded <a href="./DataCode/DTI.RDA">here</a>.</p>
+<p>This page contains a combination of traditional lecture materials (slides) and code demonstrating the relevant methods. The short course will proceed by working through both. We will use several recent packages in our examples; see the <a href="./About.html">About</a> page for information about the package versions.</p>
+<pre class="r"><code>library(tidyverse)
+library(grpreg)
+library(splines)
+library(refund)
+library(refund.shiny)</code></pre>
+<div id="methods-for-variable-selection" class="section level2">
+<h2>Methods for variable selection</h2>
+<p>(placeholder for slides talking about penalization, group penalization, and bayesian variable selection methods)</p>
 </div>
-<div id="sugar-data" class="section level3">
-<h3>Sugar Data</h3>
-<p>The data description below comes from <a href="http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf">Gertheiss et al</a> 2013:</p>
-<p>In chemometrics there are often function-like absorbance or emission spectra given – in particular for food samples – that are used to determine the content of certain ingredients. Using the spectra is typically much cheaper than alternative chemical analysis.</p>
-<p>268 samples of sugar were dissolved and the solution was measured spectrofluorometrically. For every sample the emission spectra from 275–560 nm were measured in 0.5 nm intervals (i.e., at 571 wavelengths) at seven excitation wavelengths: 230, 240, 255, 290, 305, 325, and 340 nm. In addition, there are laboratory determinations of the quality of the sugar given, such as ash content (in percentage). Ash content measures the amount of inorganic impurities in the refined sugar, cf. Bro (1999). The aim of the analysis is to study the association between the ash content and the fluorescence spectra.</p>
-<p>The original data can be downloaded <a href="http://www.models.life.ku.dk/sugar_process">here</a>, and a processed version is available <a href="./DataCode/Sugar.RDA">here</a>.</p>
-</div>
-<div id="activity-data" class="section level3">
-<h3>Activity Data</h3>
-<p>The data description below draws heavily from <a href="http://jeffgoldsmith.com/Downloads/HeadStart.pdf">Goldsmith et al</a> 2016:</p>
-<p>Accelerometers have become an appealing alternative to self-report techniques for studying physical activity in observational studies and clinical trials, largely because of their relative objectivity. During observation periods, the devices measure electrical signals that are a proxy for acceleration. ``Activity counts&quot; are then devised by summarizing the voltage signals across a short period known as an epoch; one-minute epochs are common. Because accelerometers can be worn comfortably and unobtrusively, they produce around-the-clock observations of many kinds of activity.</p>
-<p>Study participants were recruited from 50 Head Start centers in northern Manhattan, the Bronx, and Brooklyn, in neighborhoods with high rates of pediatric asthma. We used a survey instrument to collect data on the child’s age, race, sex, asthma symptoms and other medical conditions, birth order and family-related factors, and features of the home environment. Field staff measured the child’s height, weight, and skin-fold thicknesses The staff then attached the accelerometer to the child’s non-dominant wrist with a hospital band. We obtain <span class="math inline">\(y_i(t)\)</span> by averaging, for each <span class="math inline">\(t\)</span> separately, across the six days of observation for each child. Additionally, we aggregate into 10 minute epochs.</p>
-<p>For data confidentiality reasons, we will work with a simulated dataset. These data are simulated to mimic real data: they use realistic covariates, coefficients based on a fitted model, and residuals based on those in a full analysis. The activity data can be found <a href="./DataCode/Activity.RDA">here</a>.</p>
-</div>
-</div>
-<div id="additional-code" class="section level2">
-<h2>Additional code</h2>
-<p>In the limited time of the short course, we won’t have time to carefully examine all available options for fitting functional regression models with variable selection. Below are some additional resources that may be of interest:</p>
-<ul>
-<li>The methods for generalized scalar-on-function regression found in <a href="http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf">Gertheiss et al</a> 2013 are implemented <a href="./DataCode/Gertheiss.zip">here</a>. The zip file includes code to analyze the DTI and Sugar datasets.</li>
-<li>The methods for function-on-scalar regression using the LASSO found in <a href="https://arxiv.org/pdf/1610.07403.pdf">Barber et al</a> and in subsequent work are implemented <a href="./DataCode/Reimherr.zip">here</a>.</li>
-</ul>
+<div id="practical-examples" class="section level2">
+<h2>Practical examples</h2>
+<p>(code and text for group penalization, especially MCP)</p>
 </div>
 
 

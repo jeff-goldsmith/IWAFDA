@@ -8,7 +8,15 @@ navbar:
     - text: "Plenary Talk"
       href: plenary.html
     - text: "Short Course"
-      href: shortcourse.html
+      menu:
+        - text: "Review"
+          href: shortcourse_review.html
+        - text: "Scalar-on-Function"
+          href: shortcourse_sofr.html
+        - text: "Function-on-Scalar"
+          href: shortcourse_fosr.html
+        - text: "Other Topics"
+          href: shortcourse_other.html
     - text: "Data and Code"
       href: data.html
   right:
