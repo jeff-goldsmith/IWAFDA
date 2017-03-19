@@ -15,7 +15,7 @@ The following datasets are used as examples.
 
 ### DTI Data
 
-The data description below draws heavily from [Goldsmith et al](http://www.tandfonline.com/doi/abs/10.1198/jcgs.2010.10007) 2011:
+The data description below draws heavily from [Goldsmith et al](http://www.tandfonline.com/doi/abs/10.1198/jcgs.2010.10007) (2011):
 
 Diffusion tensor imaging (DTI) tractography is a magnetic resonance imaging (MRI) technique that allows the study of white-matter tracts by measuring the diffusivity of water in the brain: in white-matter tracts, water diffuses anisotropically in the direction of the tract, while elsewhere water diffuses isotropically. Using measurements of diffusivity along several gradients, DTI can provide relatively detailed images of white-matter anatomy in the brain. 
 
@@ -25,7 +25,7 @@ Several tracts are included in the DTI dataset, and each tract has profiles for 
 
 ### Sugar Data
 
-The data description below comes from [Gertheiss et al](http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf) 2013:
+The data description below comes from [Gertheiss et al](http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf) (2013):
 
 In chemometrics there are often function-like absorbance or emission spectra given – in particular for food samples – that are used to determine the content of certain ingredients. Using the spectra is typically much cheaper than alternative chemical analysis. 
 
@@ -35,7 +35,7 @@ The original data can be downloaded [here](http://www.models.life.ku.dk/sugar_pr
 
 ### Activity Data
 
-The data description below draws heavily from [Goldsmith et al](http://jeffgoldsmith.com/Downloads/HeadStart.pdf) 2016:
+The data description below draws heavily from [Goldsmith et al](http://jeffgoldsmith.com/Downloads/HeadStart.pdf) (2016):
 
 Accelerometers have become an appealing alternative to self-report techniques for studying physical activity in observational studies and clinical trials, largely because of their relative objectivity. During observation periods, the devices measure electrical signals that are a proxy for acceleration. ``Activity counts" are then devised by summarizing the voltage signals across a short period known as an epoch; one-minute epochs are common. Because accelerometers can be worn comfortably and unobtrusively, they produce around-the-clock observations of many kinds of activity.
 
@@ -47,5 +47,5 @@ For data confidentiality reasons, we will work with a simulated dataset. These d
 
 In the limited time of the short course, we won't have time to carefully examine all available options for fitting functional regression models with variable selection. Below are some additional resources that may be of interest:
 
-* The methods for generalized scalar-on-function regression found in [Gertheiss et al](http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf) 2013 are implemented [here](./DataCode/Gertheiss.zip). The zip file includes code to analyze the DTI and Sugar datasets.
+* The methods for generalized scalar-on-function regression found in [Gertheiss et al](http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf) (2013) are implemented [here](./DataCode/Gertheiss.zip). The zip file includes code to analyze the DTI and Sugar datasets.
 * The methods for function-on-scalar regression using the LASSO found in [Barber et al](https://arxiv.org/pdf/1610.07403.pdf) and in subsequent work are implemented [here](./DataCode/Reimherr.zip).
