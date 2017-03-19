@@ -137,6 +137,6 @@ as_refundObj(wave_230) %>%
 	ggplot(aes(x = index, y = value, group = id, color = ash)) + geom_path(alpha = .5)
 ```
 
-You're encouraged to try the preceeding variable selection tools on these data, and to extend them in directions that interest you.
+You're encouraged to try the preceeding variable selection tools on these data, and to extend them in directions that interest you. You may also be interested in exploring the use of methods in [Gertheiss et al](http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf) 2013; code implementing these methods for the DTI and Sugar data is available [here](./DataCode/Gertheiss.zip).
 
 
