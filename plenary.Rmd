@@ -2,4 +2,6 @@
 title: "Plenary Talk"
 ---
 
-Slides for the plenary talk, titled "Kinematic Data in Motor Control Experiments", can be found [here](http://jeffgoldsmith.com/Presentations/20170227_HetFPCA.html#1).
+Slides for the plenary talk are below.
+
+<script async class="speakerdeck-embed" data-id="8d8ba68c2ba14d42954fa2c96cf8bd5d" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script> <div style="margin-bottom:5px"> <strong> <a href="https://speakerdeck.com/jeffgoldsmith/modeling-motor-learning" title="Modeling motor learning" target="_blank">Modeling motor learning</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong> </div>

@@ -25,6 +25,13 @@ library(refund.shiny)
 
 In this section we'll use the [Activity data](./Data.html) to motivate the function-on-scalar regression model and variable selection in this context. Our main outcome of interest is the observed physical activity profile, with predictors including age, sex, and season. Below we plot activity profiles colored by sex.
 
+```{r Accel_explore, eval = TRUE}
+load("./DataCode/Activity.RDA")
+
+as_refundObj(accel) %>% 
+	left_join(dplyr::select(covariate_data, id, sex_male)) %>%
+	ggplot(aes(x = index, y = value, group = id, color = sex_male)) + geom_path(alpha = .5)
+```
 
 ## Methods for variable selection
 
