@@ -404,7 +404,7 @@ processed_predictors = map2(predictors, predictor_basis, preprocess_fd_for_sofr)
 <p>Given the processed predictors, we construct the design matrix and fit the model using the group variable selection illustrated previously.</p>
 <pre class="r"><code>y = outcome_data$case
 X = do.call(cbind, processed_predictors)
-group = rep(1:30, each = 10)
+group = rep(predictor_names, each = 10)
 
 sofr_fit = grpreg(X = X, y = y, group = group, family = &quot;binomial&quot;, penalty = &quot;grLasso&quot;)</code></pre>
 <p>The panels below show the results of the preceding model fit for two values of the tuning parameter. For each, estimated spline coefficients are combined with the spline basis to produce the coefficient function.</p>
@@ -418,10 +418,10 @@ sofr_fit = grpreg(X = X, y = y, group = group, family = &quot;binomial&quot;, pe
 }
     
 coef_construct = function(lambda_index) {
-    pmap(list(split(sofr_fit$beta[-1, lambda_index], group), 
-                                                predictor_basis, 
-                                                predictor_names), 
-                                     single_coef_construct) %&gt;%
+    arg_list = list(split(sofr_fit$beta[-1, lambda_index], group), 
+                                    predictor_basis, 
+                                    predictor_names)
+    pmap(arg_list, single_coef_construct) %&gt;%
     bind_rows %&gt;%
     mutate(lambda = round(sofr_fit$lambda[lambda_index], 3))
 }
@@ -442,7 +442,7 @@ as_refundObj(wave_230) %&gt;%
     ggplot(aes(x = index, y = value, group = id, color = ash)) + geom_path(alpha = .5)
 ## Joining, by = &quot;id&quot;</code></pre>
 <p><img src="shortcourse_sofr_files/figure-html/Sugar_explore-1.png" width="672" /></p>
-<p>You’re encouraged to try the preceeding variable selection tools on these data, and to extend them in directions that interest you.</p>
+<p>You’re encouraged to try the preceeding variable selection tools on these data, and to extend them in directions that interest you. You may also be interested in exploring the use of methods in <a href="http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf">Gertheiss et al</a> (2013); code implementing these methods for the DTI and Sugar data is available <a href="./DataCode/Gertheiss.zip">here</a>.</p>
 </div>
 
 

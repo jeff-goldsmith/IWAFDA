@@ -60,7 +60,7 @@ plot_shiny(fpca_ex)
 
 Several steps are needed to organize the functional predictors to fit the scalar-on-function regression with variable selection. In particular, for this dataset we use FPCA on each predictor; scale the resulting reconstructions; and combine with a spline basis. The code below implements these steps and produces a list containing the result for each predictor.
 
-```{r DTI_preprocess_funcs, eval = TRUE}
+```{r DTI_preprocess_funcs, eval = TRUE, cache = TRUE}
 basis_create = function(data_matrix) {
 	index = seq(0, 1, length = dim(data_matrix)[2])
 	basis = splines::bs(index, df = 10, intercept = TRUE)
@@ -91,7 +91,7 @@ Given the processed predictors, we construct the design matrix and fit the model
 ```{r DTI_sofr_fit, eval = TRUE}
 y = outcome_data$case
 X = do.call(cbind, processed_predictors)
-group = rep(1:30, each = 10)
+group = rep(predictor_names, each = 10)
 
 sofr_fit = grpreg(X = X, y = y, group = group, family = "binomial", penalty = "grLasso")
 ```
