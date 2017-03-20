@@ -29,8 +29,8 @@ In this section we'll use the [Activity data](./Data.html) to motivate the funct
 load("./DataCode/Activity.RDA")
 
 as_refundObj(accel) %>% 
-	left_join(dplyr::select(covariate_data, id, sex_male)) %>%
-	ggplot(aes(x = index, y = value, group = id, color = sex_male)) + geom_path(alpha = .5)
+	left_join(dplyr::select(covariate_data, id, sex_female)) %>%
+	ggplot(aes(x = index, y = value, group = id, color = sex_female)) + geom_path(alpha = .5)
 ```
 
 ## Methods for variable selection
@@ -47,7 +47,7 @@ To motivate the use of variable selection methods for this dataset, we can exami
 temp_df = covariate_data
 temp_df$accel = accel
 
-fit_unpenalized = bayes_fosr(accel ~ season_warm + sex_male + BMIZ + TV_g2hr + video_g1hr +
+fit_unpenalized = bayes_fosr(accel ~ season_warm + sex_female + BMIZ + TV_g2hr + video_g1hr +
 														 	mom_work_yes + asthma_yes + child_age + mom_age + educ_mom + num_rooms + 
 														 	mom_born_US + tricep + subscap + skinfold, data = temp_df)
 

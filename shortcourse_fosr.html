@@ -384,8 +384,8 @@ library(refund.shiny)</code></pre>
 <pre class="r"><code>load(&quot;./DataCode/Activity.RDA&quot;)
 
 as_refundObj(accel) %&gt;% 
-    left_join(dplyr::select(covariate_data, id, sex_male)) %&gt;%
-    ggplot(aes(x = index, y = value, group = id, color = sex_male)) + geom_path(alpha = .5)
+    left_join(dplyr::select(covariate_data, id, sex_female)) %&gt;%
+    ggplot(aes(x = index, y = value, group = id, color = sex_female)) + geom_path(alpha = .5)
 ## Joining, by = &quot;id&quot;</code></pre>
 <p><img src="shortcourse_fosr_files/figure-html/Accel_explore-1.png" width="672" /></p>
 <div id="methods-for-variable-selection" class="section level2">
@@ -399,7 +399,7 @@ as_refundObj(accel) %&gt;%
 <pre class="r"><code>temp_df = covariate_data
 temp_df$accel = accel
 
-fit_unpenalized = bayes_fosr(accel ~ season_warm + sex_male + BMIZ + TV_g2hr + video_g1hr +
+fit_unpenalized = bayes_fosr(accel ~ season_warm + sex_female + BMIZ + TV_g2hr + video_g1hr +
                                                             mom_work_yes + asthma_yes + child_age + mom_age + educ_mom + num_rooms + 
                                                             mom_born_US + tricep + subscap + skinfold, data = temp_df)
 ## Beginning Algorithm 
