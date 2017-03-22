@@ -1,10 +1,4 @@
 base
-methods
-datasets
-utils
-grDevices
-graphics
-stats
 tidyverse
 ggplot2
 tibble
@@ -14,6 +8,5 @@ purrr
 dplyr
 Matrix
 grpreg
-splines
 refund
 refund.shiny

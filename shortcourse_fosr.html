@@ -414,13 +414,13 @@ as_refundObj(fit_unpenalized$beta.hat[-1,]) %&gt;%
 <pre class="r"><code>covariate_data = dplyr::select(covariate_data, -id)
 
 X_fixef = scale(data.matrix(covariate_data))
-basis = bs(seq(0, 1, length = 144), df = 10, intercept = TRUE)
+basis = bs(seq(0, 1, length = 144), df = 5, intercept = TRUE)
 
 X_model = kronecker(X_fixef, basis)
 y = as.vector(t(scale(accel, scale = FALSE)))</code></pre>
 <p>Next, we fit the model using group variable selection.</p>
 <pre class="r"><code>predictor_names = names(covariate_data)
-group = rep(predictor_names, each = 10)
+group = rep(1:15, each = 5)
 
 fosr_fit = grpreg(X = X_model, y = y, group = group, penalty = &quot;grMCP&quot;)</code></pre>
 <p>The panels below show the results of the preceding model fit for two values of the tuning parameter. For each, estimated spline coefficients are combined with the spline basis to produce the coefficient function.</p>
@@ -442,7 +442,7 @@ coef_construct = function(lambda_index, fit) {
     mutate(lambda = round(fit$lambda[lambda_index], 3))
 }
 
-bind_rows(coef_construct(20, fosr_fit), coef_construct(80, fosr_fit)) %&gt;%
+bind_rows(coef_construct(12, fosr_fit), coef_construct(80, fosr_fit)) %&gt;%
     ggplot(aes(x = index, y = value, group = id)) + geom_path() + 
     facet_grid(~lambda)</code></pre>
 <p><img src="shortcourse_fosr_files/figure-html/Accel_fosr_res-1.png" width="672" /></p>
@@ -462,7 +462,7 @@ y_whitened = as.vector(t(accel %*% t(c)))
 
 fosr_fit_whitened = grpreg(X = X_model_whitened, y = y_whitened, group = group, penalty = &quot;grMCP&quot;)
 
-bind_rows(coef_construct(10, fosr_fit_whitened), coef_construct(80, fosr_fit_whitened)) %&gt;%
+bind_rows(coef_construct(20, fosr_fit_whitened), coef_construct(80, fosr_fit_whitened)) %&gt;%
     ggplot(aes(x = index, y = value, group = id)) + geom_path() + 
     facet_grid(~lambda)</code></pre>
 <p><img src="shortcourse_fosr_files/figure-html/Accel_fosr_prewhiten-1.png" width="672" /></p>
@@ -471,14 +471,14 @@ bind_rows(coef_construct(10, fosr_fit_whitened), coef_construct(80, fosr_fit_whi
 <h2>Try it yourself!</h2>
 <p>The DTI dataset, used to illustrate scalar-on-function regression in the previous section, can also be used as an example for function-on-scalar regression by treating a single tract profile as an outcome and the many covariates as predictors.</p>
 <p>You’re encouraged to try the preceeding variable selection tools on these data, and to extend them in directions that interest you. For example, you may want to modify the preceeding to account for incompletely-observed curves or to incorporate more explicit smoothness constraints.</p>
-<p>You may also be interested in exploring the use of methods in <a href="http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf">Reimherr et al</a> (2016); code implementing these methods for the Activity data is available <a href="./DataCode/Reimherr.zip">here</a>.</p>
+<p>You may also be interested in exploring the use of the FLAME method in <a href="http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf">Parodi and Reimherr</a> (2016); code implementing this method for the Activity data is available <a href="./DataCode/Reimherr.zip">here</a>.</p>
 <p>Lastly, we note that similar functionality is implemented in <code>refund::fosr.vs()</code> and illustrate this for the Activity data with the code below. Note that this uses cross validation and can take some time to execute; the resulting coefficient functions are plotted below.</p>
 <pre class="r"><code>temp_df = data.frame(scale(covariate_data))
 temp_df$accel = scale(accel, scale = FALSE)
 
-fosr.vs_fit = fosr.vs(accel ~ ., data = temp_df, method = &quot;grMCP&quot;)
+fosr.vs_fit = fosr.vs(accel ~ ., nbasis = 5, data = temp_df, method = &quot;grMCP&quot;)
 ## Beginning iterative algorithm 
-## .
+## ...
 
 as_refundObj(fosr.vs_fit$coefficients) %&gt;%
     ggplot(aes(x = index, y = value, group = id)) + geom_path()</code></pre>
