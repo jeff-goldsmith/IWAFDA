@@ -29,8 +29,91 @@ library(refund.shiny)
 <script async class="speakerdeck-embed" data-id="a3d65d19df9d45f69010597ab6c957c6" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
 <div style="margin-bottom:5px"> <strong> <a href="https://speakerdeck.com/jeffgoldsmith/modeling-motor-learning" title="Review of methods" target="_blank">Review of methods</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>. </div>
 
-## Practical examples
+## Practical example
 
-(code and text for group penalization, especially MCP)
+In this section we will briefly examine implementations of variable selection methods, with emphasis on group variable selection methods using penalized approaches. The primary package and function is `grpreg::grpreg`; we'll start with the example included in the help file for this function.
+
+A brief examination of the example data is below. Particular attention should be paid to variable classes.
+```{r grpreg_BWT_explore, eval = TRUE}
+data(Birthwt)
+names(Birthwt)
+
+class(Birthwt$X)
+class(Birthwt$group)
+
+head(Birthwt$X) %>% round(3)
+Birthwt$group
+```
+
+Next we'll fit a regression for birthweight as a response and the grouped variables as predictors.
+```{r grpreg_BWT_fit, eval = TRUE}
+X <- Birthwt$X
+group <- Birthwt$group
+y <- Birthwt$bwt
+
+fit_lasso <- grpreg(X, y, group, penalty="grLasso")
+fit_MCP <- grpreg(X, y, group, penalty="grMCP")
+fit_SCAD <- grpreg(X, y, group, penalty="grSCAD")
+
+par(mfrow = c(1,3))
+plot(fit_lasso)
+plot(fit_MCP)
+plot(fit_SCAD)
+par(mfrow = c(1,1))
+```
+
+Examining coefficients at a few choices of the tuning parameter is also informative.
+```{r grpreg_coefs, eval = TRUE}
+fit_MCP$beta[,c(5,10,70)]
+```
+
+The `grpreg` package has two approaches for choosing the tuning parameter: selection using an information criterion and cross validation. The code below briefly compares these approaches using a Lasso penalty.
+```{r grpreg_select, eval = TRUE}
+coef_BIC = grpreg::select(fit_lasso, "BIC")$beta
+coef_AIC = grpreg::select(fit_lasso, "AIC")$beta
+fit_cv = cv.grpreg(X, y, group, penalty = "grLasso", seed = 1)
+coef_CV = fit_cv$fit$beta[,fit_cv$min]
+
+cbind(coef_BIC, coef_AIC, coef_CV)
+```
 
 
+## Try it yourself!
+
+Next we'll take a few minutes for some independent coding. Using the DTI dataset, create predictors based on averaging across profiles. Grouping these within tracts (or within modalities), use these as predictors of _pasat_ or _case_.
+
+```{r grpreg_DTI, eval = FALSE, echo = FALSE}
+load("./DataCode/DTI.RDA")
+
+predictor_names = paste(rep(c("CSTR", "CSTL", "CCA", "OPRL", "OPRR"), each = 6), 
+									rep(c("ani", "l0", "lt", "md", "mtr", "t2"), 5), 
+									sep = "_")
+tract_means = map(predictor_names, ~apply(get(.x), 1, mean, na.rm = TRUE))
+
+X = matrix(unlist(tract_means), 211, 30, byrow = FALSE)
+y = outcome_data$pasat
+
+keep = complete.cases(cbind(y, X))
+X = X[keep,]
+y = y[keep]
+
+group = factor(rep(c("CSTR", "CSTL", "CCA", "OPRL", "OPRR"), each = 6), 
+               levels = c("CSTR", "CSTL", "CCA", "OPRL", "OPRR"))
+
+fit_lasso <- grpreg(X, y, group, penalty="grLasso")
+fit_MCP <- grpreg(X, y, group, penalty="grMCP")
+fit_SCAD <- grpreg(X, y, group, penalty="grSCAD")
+
+par(mfrow = c(1,3))
+plot(fit_lasso)
+plot(fit_MCP)
+plot(fit_SCAD)
+par(mfrow = c(1,1))
+
+coef_BIC = grpreg::select(fit_lasso, "BIC")$beta
+coef_AIC = grpreg::select(fit_lasso, "AIC")$beta
+fit_cv = cv.grpreg(X, y, group, penalty = "grLasso", seed = 1)
+coef_CV = fit_cv$fit$beta[,fit_cv$min]
+
+cbind(coef_BIC, coef_AIC, coef_CV)
+```

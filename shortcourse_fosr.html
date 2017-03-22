@@ -470,8 +470,8 @@ bind_rows(coef_construct(20, fosr_fit_whitened), coef_construct(80, fosr_fit_whi
 <div id="try-it-yourself" class="section level2">
 <h2>Try it yourself!</h2>
 <p>The DTI dataset, used to illustrate scalar-on-function regression in the previous section, can also be used as an example for function-on-scalar regression by treating a single tract profile as an outcome and the many covariates as predictors.</p>
-<p>You’re encouraged to try the preceeding variable selection tools on these data, and to extend them in directions that interest you. For example, you may want to modify the preceeding to account for incompletely-observed curves or to incorporate more explicit smoothness constraints.</p>
-<p>You may also be interested in exploring the use of the FLAME method in <a href="http://www4.stat.ncsu.edu/~staicu/papers/msFGRPL_R1.pdf">Parodi and Reimherr</a> (2016); code implementing this method for the Activity data is available <a href="./DataCode/Reimherr.zip">here</a>.</p>
+<p>You’re encouraged to try the preceeding variable selection tools on these data, and to extend them in directions that interest you. For example, you may want to modify the preceeding to account for incompletely-observed curves, to implememnt cross-validation to choose the tuning parameter, or to incorporate more explicit smoothness constraints.</p>
+<p>You may also be interested in exploring the use of the FLAME method in Parodi and Reimherr (2016); a preprint and code implementing this method for the Activity data is available <a href="./DataCode/Reimherr.zip">here</a>.</p>
 <p>Lastly, we note that similar functionality is implemented in <code>refund::fosr.vs()</code> and illustrate this for the Activity data with the code below. Note that this uses cross validation and can take some time to execute; the resulting coefficient functions are plotted below.</p>
 <pre class="r"><code>temp_df = data.frame(scale(covariate_data))
 temp_df$accel = scale(accel, scale = FALSE)
