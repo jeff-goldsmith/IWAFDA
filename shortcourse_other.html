@@ -348,13 +348,69 @@ div.tocify {
 
 <p>This page contains a combination of traditional lecture materials (slides) and code demonstrating the relevant methods. The short course will proceed by working through both. We will use several recent packages in our examples; see the <a href="./About.html">About</a> page for information about the package versions.</p>
 <pre class="r"><code>library(tidyverse)
-library(grpreg)
-library(splines)
-library(refund)
+library(vbvs.concurrent)
 library(refund.shiny)</code></pre>
 <div id="other-topics" class="section level2">
 <h2>Other topics</h2>
-<p>Time permitting? VBVS in concurrent model. Prediction more generally (ensemble prediction)</p>
+</div>
+<div id="practical-example" class="section level2">
+<h2>Practical example</h2>
+<p>Due to a lack of publicly available and easy-to-implement code for scalar-on-image regression, we focus on methods for the functional linear concurrent model.</p>
+<p>The snippet below simulates a simple example which we will use for illustration.</p>
+<pre class="r"><code>## set design elements
+set.seed(1)
+I = 50
+
+## coefficient functions
+beta1 = function(t) { 1 }
+beta2 = function(t) { cos(2*t*pi) }
+
+## generate subjects and observation times
+concurrent_data = 
+  data.frame(
+    subj = rep(1:I, each = 20)
+  ) %&gt;%
+  mutate(time = runif(dim(.)[1])) %&gt;%
+  arrange(subj, time) %&gt;%
+  group_by(subj) %&gt;%
+    mutate(Cov_1 = runif(1, .5, 1.5) * sin(2 * pi * time),
+           Cov_2 = runif(1, 0, 1) + runif(1, -.5, 2) * time,
+           Y = Cov_1 * beta1(time) + 
+               Cov_2 * beta2(time) +
+               rnorm(20, 0, .5)) %&gt;%
+  ungroup() %&gt;%
+    dplyr::select(subj, time, Y, everything())
+
+superfulous_covariates = matrix(rnorm(18 * I * 20), nrow = I * 20, ncol = 18)
+colnames(superfulous_covariates) = paste0(&quot;Cov_&quot;, 3:20)
+
+concurrent_data = bind_cols(concurrent_data, as.data.frame(superfulous_covariates))</code></pre>
+<p>The plot below shows the first two predictors and the response, highlighting four subjects.</p>
+<pre><code>## 
+## Attaching package: &#39;gridExtra&#39;
+## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine</code></pre>
+<p><img src="shortcourse_other_files/figure-html/plot_data-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>To fit the functional linear concurrent model with variable selection, we can use <code>vbvs_concurrent</code>.</p>
+<pre class="r"><code>fit_vbvs = vbvs_concurrent(Y ~ Cov_1 + Cov_2 + Cov_3 + Cov_4 + Cov_5 + 
+                                                     Cov_6 + Cov_7 + Cov_8 + Cov_9 + Cov_10 + 
+                                                     Cov_11 + Cov_12 + Cov_13 + Cov_14 + Cov_15 + 
+                                                     Cov_16 + Cov_17 + Cov_18 + Cov_19 + Cov_20 | time, 
+                                                     id.var = &quot;subj&quot;, data = concurrent_data, 
+                           t.min = 0, t.max = 1, standardized = TRUE)
+## Constructing Xstar; doing data organization 
+## Beginning Algorithm 
+## ..........</code></pre>
+<p>The plot below shows true coefficients and estimates without using variable selection.</p>
+<p><img src="shortcourse_other_files/figure-html/coefficients-1.png" width="864" /></p>
+<p>Interactive graphics show observed data, coefficient functions, and residual curves. The code below will produce such a graphic.</p>
+<pre class="r"><code>plot_shiny(fit_vbvs)</code></pre>
+</div>
+<div id="try-it-yourself" class="section level2">
+<h2>Try it yourself!</h2>
+<p>As in all other examples, the preceding approach has tuning parameters. These can be set by hand using the <em>v0</em> argument to the <code>vbvs_concurrent</code> function. There is also a <code>cv_vbvs_concurrent</code> function, and versions without variable selection.</p>
+<p>As an alternative to the functional linear concurrent model, note that the functional linear model is a special case; by carefully constructing the data frame containing predictions, <code>vbvs_concurrent</code> can be used for variable selection in that setting, and is interesting to compare to other methods we’ve seen so far.</p>
 </div>
 
 

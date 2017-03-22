@@ -17,14 +17,104 @@ This page contains a combination of traditional lecture materials (slides) and c
 
 ```{r setup}
 library(tidyverse)
-library(grpreg)
-library(splines)
-library(refund)
+library(vbvs.concurrent)
 library(refund.shiny)
 ```
 
 
 ## Other topics
 
-Time permitting? VBVS in concurrent model. Prediction more generally (ensemble prediction)
 
+
+## Practical example
+
+Due to a lack of publicly available and easy-to-implement code for scalar-on-image regression, we focus on methods for the functional linear concurrent model. 
+
+The snippet below simulates a simple example which we will use for illustration. 
+
+```{r vbvs_sim_data}
+## set design elements
+set.seed(1)
+I = 50
+
+## coefficient functions
+beta1 = function(t) { 1 }
+beta2 = function(t) { cos(2*t*pi) }
+
+## generate subjects and observation times
+concurrent_data = 
+  data.frame(
+    subj = rep(1:I, each = 20)
+  ) %>%
+  mutate(time = runif(dim(.)[1])) %>%
+  arrange(subj, time) %>%
+  group_by(subj) %>%
+    mutate(Cov_1 = runif(1, .5, 1.5) * sin(2 * pi * time),
+           Cov_2 = runif(1, 0, 1) + runif(1, -.5, 2) * time,
+           Y = Cov_1 * beta1(time) + 
+               Cov_2 * beta2(time) +
+               rnorm(20, 0, .5)) %>%
+  ungroup() %>%
+	dplyr::select(subj, time, Y, everything())
+
+superfulous_covariates = matrix(rnorm(18 * I * 20),	nrow = I * 20, ncol = 18)
+colnames(superfulous_covariates) = paste0("Cov_", 3:20)
+
+concurrent_data = bind_cols(concurrent_data, as.data.frame(superfulous_covariates))
+```
+
+The plot below shows the first two predictors and the response, highlighting four subjects.
+
+```{r plot_data, fig.align='center', fig.height=3, fig.width=9, echo=FALSE}
+library(gridExtra)
+
+plot_function = function(value_var, data) {
+  ggplot(data, aes_string(x = "time", y = value_var, group = "subj")) + geom_path(alpha = .1) +
+    theme_bw() +
+    geom_path(data = filter(data, subj %in% 1:4) %>% mutate(subj = as.factor(subj)), aes(color = subj)) + 
+    theme(legend.position = "none")
+}
+
+panels = lapply(c("Cov_1", "Cov_2", "Y"), plot_function, data = concurrent_data)
+
+grid.arrange(panels[[1]], panels[[2]], panels[[3]], nrow = 1)
+
+```
+
+To fit the functional linear concurrent model with variable selection, we can use `vbvs_concurrent`. 
+
+```{r vbvs_fit}
+fit_vbvs = vbvs_concurrent(Y ~ Cov_1 + Cov_2 + Cov_3 + Cov_4 + Cov_5 + 
+													 Cov_6 + Cov_7 + Cov_8 + Cov_9 + Cov_10 + 
+													 Cov_11 + Cov_12 + Cov_13 + Cov_14 + Cov_15 + 
+													 Cov_16 + Cov_17 + Cov_18 + Cov_19 + Cov_20 | time, 
+													 id.var = "subj", data = concurrent_data, 
+                           t.min = 0, t.max = 1, standardized = TRUE)
+```
+
+The plot below shows true coefficients and estimates without using variable selection.
+
+```{r coefficients, echo=FALSE, fig.height=6, fig.width=9, echo=FALSE}
+coefs = coef(fit_vbvs, t.new = seq(0, 1, length = 101)) %>%
+  mutate(True_1 = beta1(time),
+         True_2 = beta2(time)) %>%
+  gather(key, value, Cov_1:True_2) %>%
+  extract(key, c("Estimate", "Beta"), "([[:alnum:]]+)_([[:alnum:]]+)") %>%
+	mutate(Beta = factor(Beta, levels = 1:20))
+
+ggplot(coefs, aes(x = time, y = value, color = Estimate)) + geom_path() + 
+  facet_wrap(~Beta) + theme_bw() + theme(legend.position = "bottom")
+```
+
+Interactive graphics show observed data, coefficient functions, and residual curves. The code below will produce such a graphic.
+
+```{r interactive_plot, eval=FALSE}
+plot_shiny(fit_vbvs)
+```
+
+
+## Try it yourself!
+
+As in all other examples, the preceding approach has tuning parameters. These can be set by hand using the _v0_ argument to the `vbvs_concurrent` function. There is also a `cv_vbvs_concurrent` function, and versions without variable selection.
+
+As an alternative to the functional linear concurrent model, note that the functional linear model is a special case; by carefully constructing the data frame containing predictions, `vbvs_concurrent` can be used for variable selection in that setting, and is interesting to compare to other methods we've seen so far.
