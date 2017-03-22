@@ -24,6 +24,8 @@ library(refund.shiny)
 
 ## Other topics
 
+<script async class="speakerdeck-embed" data-id="2db7348be17b4d47a9b0aca62b482559" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+<div style="margin-bottom:5px"> <strong> <a href="https://speakerdeck.com/jeffgoldsmith/modeling-motor-learning" title="VS in FDA Short Course IV" target="_blank">VS in FDA Short Course IV</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>. </div>
 
 
 ## Practical example
@@ -40,6 +42,7 @@ I = 50
 ## coefficient functions
 beta1 = function(t) { 1 }
 beta2 = function(t) { cos(2*t*pi) }
+psi1 = function(t) { sin(2*t*pi) }
 
 ## generate subjects and observation times
 concurrent_data = 
@@ -51,8 +54,10 @@ concurrent_data =
   group_by(subj) %>%
     mutate(Cov_1 = runif(1, .5, 1.5) * sin(2 * pi * time),
            Cov_2 = runif(1, 0, 1) + runif(1, -.5, 2) * time,
+    			 FPC_score = rnorm(1, 0, .5),
            Y = Cov_1 * beta1(time) + 
                Cov_2 * beta2(time) +
+    			 	   FPC_score * psi1(time) + 
                rnorm(20, 0, .5)) %>%
   ungroup() %>%
 	dplyr::select(subj, time, Y, everything())
@@ -106,10 +111,11 @@ ggplot(coefs, aes(x = time, y = value, color = Estimate)) + geom_path() +
   facet_wrap(~Beta) + theme_bw() + theme(legend.position = "bottom")
 ```
 
-Interactive graphics show observed data, coefficient functions, and residual curves. The code below will produce such a graphic.
+Interactive graphics show observed data, coefficient functions, and residual curves. The code below will produce such a graphic. As noted in the slides, this approach also uses FPCA to decompose residual curves as part of the overall model fitting; this decomposition can be viewed using the tool we saw previously.
 
 ```{r interactive_plot, eval=FALSE}
 plot_shiny(fit_vbvs)
+plot_shiny(fit_vbvs$fpca.obj)
 ```
 
 
