@@ -4,4 +4,16 @@ title: "About This Website"
 
 This is an [R Markdown website](http://rmarkdown.rstudio.com/rmarkdown_websites.html), created by [Jeff Goldsmith](http://jeffgoldsmith.com) for [IWAFDA](http://www.est.uc3m.es/iwafda2/).
 
+In the short course, we'll actively use the package `grpreg`; at times, we'll use `refund`, `refund.shiny`, and `vbvs.concurrent`. Information about each of these packages and their dependencies is below. Note that both `refund.shiny` and `vbvs.concurrent` were installed from GitHub using
+
+```{r, eval=FALSE}
+devtools::install_github("refunders/refund.shiny")
+devtools::install_github("jeff-goldsmith/vbvs.concurrent")
+```
+
+Versions of key packages:
+
+```{r}
+devtools::session_info(c("grpreg", "refund", "refund.shiny", "vbvs.concurrent"))
+```
 
