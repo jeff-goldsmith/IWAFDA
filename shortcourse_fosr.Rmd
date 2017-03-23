@@ -37,7 +37,8 @@ as_refundObj(accel) %>%
 
 Slides below review function-on-scalar regression and introduce the ideas for variable selection in this context.
 
-(placeholder for slides: review fosr using splines; variable selection using group penalties; correlated errors (GLS or Bayes methods); discuss challenges, including sparse or incomplete data, smoothness constraints, and scaling)
+<script async class="speakerdeck-embed" data-id="4e67b94488734fb4a7c724e27423d0d6" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+<div style="margin-bottom:5px"> <strong> <a href="https://speakerdeck.com/jeffgoldsmith/vs-in-fda-short-course-iii" title="VS in FDA Short Course III" target="_blank">VS in FDA Short Course III</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>. </div>
 
 ## Practical example
 
@@ -77,7 +78,7 @@ Next, we fit the model using group variable selection.
 
 ```{r Accel_fosr_fit, eval = TRUE}
 predictor_names = names(covariate_data)
-group = rep(1:15, each = 5)
+group = factor(rep(predictor_names, each = 5), levels = predictor_names)
 
 fosr_fit = grpreg(X = X_model, y = y, group = group, penalty = "grMCP")
 ```

@@ -27,7 +27,7 @@ library(refund.shiny)
 ## Methods for variable selection
 
 <script async class="speakerdeck-embed" data-id="a3d65d19df9d45f69010597ab6c957c6" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
-<div style="margin-bottom:5px"> <strong> <a href="https://speakerdeck.com/jeffgoldsmith/modeling-motor-learning" title="VS in FDA Short Course I" target="_blank">VS in FDA Short Course I</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>. </div>
+<div style="margin-bottom:5px"> <strong> <a href="https://speakerdeck.com/jeffgoldsmith/vs-in-fda-short-course-i" title="VS in FDA Short Course I" target="_blank">VS in FDA Short Course I</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>. </div>
 
 ## Practical example
 

@@ -391,7 +391,10 @@ as_refundObj(accel) %&gt;%
 <div id="methods-for-variable-selection" class="section level2">
 <h2>Methods for variable selection</h2>
 <p>Slides below review function-on-scalar regression and introduce the ideas for variable selection in this context.</p>
-<p>(placeholder for slides: review fosr using splines; variable selection using group penalties; correlated errors (GLS or Bayes methods); discuss challenges, including sparse or incomplete data, smoothness constraints, and scaling)</p>
+<script async class="speakerdeck-embed" data-id="4e67b94488734fb4a7c724e27423d0d6" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+<div style="margin-bottom:5px">
+<strong> <a href="https://speakerdeck.com/jeffgoldsmith/vs-in-fda-short-course-iii" title="VS in FDA Short Course III" target="_blank">VS in FDA Short Course III</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>.
+</div>
 </div>
 <div id="practical-example" class="section level2">
 <h2>Practical example</h2>
@@ -420,7 +423,7 @@ X_model = kronecker(X_fixef, basis)
 y = as.vector(t(scale(accel, scale = FALSE)))</code></pre>
 <p>Next, we fit the model using group variable selection.</p>
 <pre class="r"><code>predictor_names = names(covariate_data)
-group = rep(1:15, each = 5)
+group = factor(rep(predictor_names, each = 5), levels = predictor_names)
 
 fosr_fit = grpreg(X = X_model, y = y, group = group, penalty = &quot;grMCP&quot;)</code></pre>
 <p>The panels below show the results of the preceding model fit for two values of the tuning parameter. For each, estimated spline coefficients are combined with the spline basis to produce the coefficient function.</p>
