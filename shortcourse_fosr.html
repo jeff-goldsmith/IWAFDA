@@ -297,6 +297,9 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="shortcourse_data.html">Data and Code</a>
+    </li>
+    <li>
       <a href="shortcourse_review.html">Review</a>
     </li>
     <li>
@@ -309,9 +312,6 @@ div.tocify {
       <a href="shortcourse_other.html">Other Topics</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="data.html">Data and Code</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -471,7 +471,7 @@ bind_rows(coef_construct(20, fosr_fit_whitened), coef_construct(80, fosr_fit_whi
 <h2>Try it yourself!</h2>
 <p>The DTI dataset, used to illustrate scalar-on-function regression in the previous section, can also be used as an example for function-on-scalar regression by treating a single tract profile as an outcome and the many covariates as predictors.</p>
 <p>You’re encouraged to try the preceeding variable selection tools on these data, and to extend them in directions that interest you. For example, you may want to modify the preceeding to account for incompletely-observed curves, to implememnt cross-validation to choose the tuning parameter, or to incorporate more explicit smoothness constraints.</p>
-<p>You may also be interested in exploring the use of the FLAME method in Parodi and Reimherr (2016); a preprint and code implementing this method for the Activity data is available <a href="./DataCode/Reimherr.zip">here</a>.</p>
+<p>You may also be interested in exploring the use of the FLAME method in Parodi and Reimherr (2016); a preprint and R code implementing this method for the Activity data is available <a href="./DataCode/Reimherr.zip">here</a>. Another method by this research group is the Adaptive Function-on-Scalar Lasso (AFLS), described in Fan and Reimherr (2016); a Matlab implementation of this method for the Activity data is included in the collection of code.</p>
 <p>Lastly, we note that similar functionality is implemented in <code>refund::fosr.vs()</code> and illustrate this for the Activity data with the code below. Note that this uses cross validation and can take some time to execute; the resulting coefficient functions are plotted below.</p>
 <pre class="r"><code>temp_df = data.frame(scale(covariate_data))
 temp_df$accel = scale(accel, scale = FALSE)

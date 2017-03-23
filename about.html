@@ -190,6 +190,9 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="shortcourse_data.html">Data and Code</a>
+    </li>
+    <li>
       <a href="shortcourse_review.html">Review</a>
     </li>
     <li>
@@ -202,9 +205,6 @@ $(document).ready(function () {
       <a href="shortcourse_other.html">Other Topics</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="data.html">Data and Code</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -232,8 +232,11 @@ $(document).ready(function () {
 
 
 <p>This is an <a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">R Markdown website</a>, created by <a href="http://jeffgoldsmith.com">Jeff Goldsmith</a> for <a href="http://www.est.uc3m.es/iwafda2/">IWAFDA</a>.</p>
-<p>In the short course, we’ll actively use the package <code>grpreg</code>; at times, we’ll use <code>refund</code>, <code>refund.shiny</code>, and <code>vbvs.concurrent</code>. Information about each of these packages and their dependencies is below. Note that both <code>refund.shiny</code> and <code>vbvs.concurrent</code> were installed from GitHub using</p>
-<pre class="r"><code>devtools::install_github(&quot;refunders/refund.shiny&quot;)
+<p>In the short course, we’ll actively use the packages <code>grpreg</code> and <code>tidyverse</code>; at times, we’ll use <code>refund</code>, <code>refund.shiny</code>, and <code>vbvs.concurrent</code>. Code to install the packages follows, and version information about each of these packages and their dependencies is at the bottom of this page.</p>
+<pre class="r"><code>install.packages(c(&quot;grpreg&quot;, &quot;tidyverse&quot;, &quot;refund&quot;, &quot;refund.shiny&quot;))</code></pre>
+<p>The versions of both <code>refund.shiny</code> and <code>vbvs.concurrent</code> that I’ll be using to demonstrate were installed from GitHub using</p>
+<pre class="r"><code>install(devtools)
+devtools::install_github(&quot;refunders/refund.shiny&quot;)
 devtools::install_github(&quot;jeff-goldsmith/vbvs.concurrent&quot;)</code></pre>
 <p>Versions of key packages:</p>
 <pre class="r"><code>devtools::session_info(c(&quot;grpreg&quot;, &quot;refund&quot;, &quot;refund.shiny&quot;, &quot;vbvs.concurrent&quot;))</code></pre>
@@ -245,7 +248,7 @@ devtools::install_github(&quot;jeff-goldsmith/vbvs.concurrent&quot;)</code></pre
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       Europe/Madrid               
-##  date     2017-03-22</code></pre>
+##  date     2017-03-23</code></pre>
 <pre><code>## Packages -----------------------------------------------------------------</code></pre>
 <pre><code>##  package         * version   date      
 ##  abind             1.4-5     2016-07-21

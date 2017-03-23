@@ -297,6 +297,9 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="shortcourse_data.html">Data and Code</a>
+    </li>
+    <li>
       <a href="shortcourse_review.html">Review</a>
     </li>
     <li>
@@ -309,9 +312,6 @@ div.tocify {
       <a href="shortcourse_other.html">Other Topics</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="data.html">Data and Code</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -363,7 +363,10 @@ as_refundObj(CCA_ani) %&gt;%
 <div id="methods-for-variable-selection" class="section level2">
 <h2>Methods for variable selection</h2>
 <p>Slides below review scalar-on-function regression and introduce the ideas for variable selection in this context.</p>
-<p>(placeholder for slides: review sofr using fpca, splines; variable selection using group penalties; extensions to generalized sofr; discuss challenges, including sparse or incomplete data, smoothness constraints, and scaling)</p>
+<script async class="speakerdeck-embed" data-id="a3d65d19df9d45f69010597ab6c957c6" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+<div style="margin-bottom:5px">
+<strong> <a href="https://speakerdeck.com/jeffgoldsmith/modeling-motor-learning" title="VS in FDA Short Course II" target="_blank">VS in FDA Short Course II</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>.
+</div>
 </div>
 <div id="practical-example" class="section level2">
 <h2>Practical example</h2>
@@ -375,7 +378,7 @@ bind_rows(as_refundObj(fpca_ex$Y) %&gt;% mutate(type = &quot;Observed&quot;),
     ggplot(aes(x = index, y = value, group = id)) + geom_path(alpha = .5) +
         facet_grid(~type)</code></pre>
 <p><img src="shortcourse_sofr_files/figure-html/DTI_sofr_varselect-1.png" width="672" /></p>
-<p>(Incidentally, the <code>refund.shiny</code> package has helpful tools for visualizing the results of an FPCA analysis).</p>
+<p>(Incidentally, the <code>refund.shiny</code> package has helpful tools for visualizing the results of an FPCA analysis. More information about the package can be found <a href="https://github.com/refunders/refund.shiny">here</a>.)</p>
 <pre class="r"><code>plot_shiny(fpca_ex)</code></pre>
 <p>Several steps are needed to organize the functional predictors to fit the scalar-on-function regression with variable selection. In particular, for this dataset we use FPCA on each predictor; scale the resulting reconstructions; and combine with a spline basis. The code below implements these steps and produces a list containing the result for each predictor.</p>
 <pre class="r"><code>basis_create = function(data_matrix) {
@@ -404,7 +407,7 @@ processed_predictors = map2(predictors, predictor_basis, preprocess_fd_for_sofr)
 <p>Given the processed predictors, we construct the design matrix and fit the model using the group variable selection illustrated previously.</p>
 <pre class="r"><code>y = outcome_data$case
 X = do.call(cbind, processed_predictors)
-group = rep(predictor_names, each = 10)
+group = factor(rep(predictor_names, each = 10), levels = predictor_names)
 
 sofr_fit = grpreg(X = X, y = y, group = group, family = &quot;binomial&quot;, penalty = &quot;grLasso&quot;)</code></pre>
 <p>The panels below show the results of the preceding model fit for two values of the tuning parameter. For each, estimated spline coefficients are combined with the spline basis to produce the coefficient function.</p>

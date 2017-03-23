@@ -37,7 +37,9 @@ as_refundObj(CCA_ani) %>%
 
 Slides below review scalar-on-function regression and introduce the ideas for variable selection in this context.
 
-(placeholder for slides: review sofr using fpca, splines; variable selection using group penalties; extensions to generalized sofr; discuss challenges, including sparse or incomplete data, smoothness constraints, and scaling)
+<script async class="speakerdeck-embed" data-id="a3d65d19df9d45f69010597ab6c957c6" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+<div style="margin-bottom:5px"> <strong> <a href="https://speakerdeck.com/jeffgoldsmith/modeling-motor-learning" title="VS in FDA Short Course II" target="_blank">VS in FDA Short Course II</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>. </div>
+
 
 ## Practical example
 
@@ -52,7 +54,7 @@ bind_rows(as_refundObj(fpca_ex$Y) %>% mutate(type = "Observed"),
 		facet_grid(~type)
 ```
 
-(Incidentally, the `refund.shiny` package has helpful tools for visualizing the results of an FPCA analysis).
+(Incidentally, the `refund.shiny` package has helpful tools for visualizing the results of an FPCA analysis. More information about the package can be found [here](https://github.com/refunders/refund.shiny).)
 
 ```{r plot_shiny_fpca, eval = FALSE}
 plot_shiny(fpca_ex)
@@ -91,7 +93,7 @@ Given the processed predictors, we construct the design matrix and fit the model
 ```{r DTI_sofr_fit, eval = TRUE}
 y = outcome_data$case
 X = do.call(cbind, processed_predictors)
-group = rep(predictor_names, each = 10)
+group = factor(rep(predictor_names, each = 10), levels = predictor_names)
 
 sofr_fit = grpreg(X = X, y = y, group = group, family = "binomial", penalty = "grLasso")
 ```

@@ -138,7 +138,7 @@ The DTI dataset, used to illustrate scalar-on-function regression in the previou
 
 You're encouraged to try the preceeding variable selection tools on these data, and to extend them in directions that interest you. For example, you may want to modify the preceeding to account for incompletely-observed curves, to implememnt cross-validation to choose the tuning parameter, or to incorporate more explicit smoothness constraints. 
 
-You may also be interested in exploring the use of the FLAME method in Parodi and Reimherr (2016); a preprint and code implementing this method for the Activity data is available [here](./DataCode/Reimherr.zip).
+You may also be interested in exploring the use of the FLAME method in Parodi and Reimherr (2016); a preprint and R code implementing this method for the Activity data is available [here](./DataCode/Reimherr.zip). Another method by this research group is the Adaptive Function-on-Scalar Lasso (AFLS), described in Fan and Reimherr (2016); a Matlab implementation of this method for the Activity data is included in the collection of code. 
 
 Lastly, we note that similar functionality is implemented in `refund::fosr.vs()` and illustrate this for the Activity data with the code below. Note that this uses cross validation and can take some time to execute; the resulting coefficient functions are plotted below.
 
