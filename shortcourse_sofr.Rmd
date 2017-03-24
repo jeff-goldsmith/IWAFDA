@@ -37,7 +37,7 @@ as_refundObj(CCA_ani) %>%
 
 Slides below review scalar-on-function regression and introduce the ideas for variable selection in this context.
 
-<script async class="speakerdeck-embed" data-id="a3d65d19df9d45f69010597ab6c957c6" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+<script async class="speakerdeck-embed" data-id="4d7b1c4fa3e84940b8c7059dffcbbf38" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
 <div style="margin-bottom:5px"> <strong> <a href="https://speakerdeck.com/jeffgoldsmith/vs-in-fda-short-course-ii" title="VS in FDA Short Course II" target="_blank">VS in FDA Short Course II</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>. </div>
 
 

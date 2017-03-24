@@ -348,9 +348,37 @@ div.tocify {
 
 <p>This page contains a combination of traditional lecture materials (slides) and code demonstrating the relevant methods. The short course will proceed by working through both. We will use several recent packages in our examples; see the <a href="./About.html">About</a> page for information about the package versions.</p>
 <pre class="r"><code>library(tidyverse)
+## Warning: package &#39;tidyverse&#39; was built under R version 3.2.5
+## Loading tidyverse: ggplot2
+## Loading tidyverse: tibble
+## Loading tidyverse: tidyr
+## Loading tidyverse: readr
+## Loading tidyverse: purrr
+## Loading tidyverse: dplyr
+## Warning: package &#39;ggplot2&#39; was built under R version 3.2.5
+## Warning: package &#39;tibble&#39; was built under R version 3.2.5
+## Warning: package &#39;tidyr&#39; was built under R version 3.2.5
+## Warning: package &#39;purrr&#39; was built under R version 3.2.5
+## Warning: package &#39;dplyr&#39; was built under R version 3.2.5
+## Conflicts with tidy packages ----------------------------------------------
+## filter(): dplyr, stats
+## lag():    dplyr, stats
 library(grpreg)
+## Warning: package &#39;grpreg&#39; was built under R version 3.2.5
+## Loading required package: Matrix
+## 
+## Attaching package: &#39;Matrix&#39;
+## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     expand
+## 
+## Attaching package: &#39;grpreg&#39;
+## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select
 library(splines)
 library(refund)
+## Warning: package &#39;refund&#39; was built under R version 3.2.5
 library(refund.shiny)</code></pre>
 <p>In this section we’ll use the <a href="./Data.html">DTI dataset</a> to motivate the scalar-on-function regression model and variable selection in this context. Our main outcome of interest is multiple sclerosis case status, and the possible predictors are tract profiles from several major white matter structures. Below we plot profiles for one tract colored by MS case status.</p>
 <pre class="r"><code>load(&quot;./DataCode/DTI.RDA&quot;)
@@ -363,7 +391,7 @@ as_refundObj(CCA_ani) %&gt;%
 <div id="methods-for-variable-selection" class="section level2">
 <h2>Methods for variable selection</h2>
 <p>Slides below review scalar-on-function regression and introduce the ideas for variable selection in this context.</p>
-<script async class="speakerdeck-embed" data-id="a3d65d19df9d45f69010597ab6c957c6" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
+<script async class="speakerdeck-embed" data-id="4d7b1c4fa3e84940b8c7059dffcbbf38" data-ratio="1.33333333333333" src="//speakerdeck.com/assets/embed.js"></script>
 <div style="margin-bottom:5px">
 <strong> <a href="https://speakerdeck.com/jeffgoldsmith/vs-in-fda-short-course-ii" title="VS in FDA Short Course II" target="_blank">VS in FDA Short Course II</a> </strong> from <strong><a href="https://speakerdeck.com/jeffgoldsmith" target="_blank">Jeff Goldsmith</a></strong>.
 </div>
