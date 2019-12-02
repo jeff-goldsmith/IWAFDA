@@ -23,7 +23,7 @@ library(refund)
 library(refund.shiny)
 ```
 
-In this section we'll use the [DTI dataset](./Data.html) to motivate the scalar-on-function regression model and variable selection in this context. Our main outcome of interest is multiple sclerosis case status, and the possible predictors are tract profiles from several major white matter structures. Below we plot profiles for one tract colored by MS case status.
+In this section we'll use the [DTI dataset](./shortcourse_data.html) to motivate the scalar-on-function regression model and variable selection in this context. Our main outcome of interest is multiple sclerosis case status, and the possible predictors are tract profiles from several major white matter structures. Below we plot profiles for one tract colored by MS case status.
 
 ```{r DTI_explore, eval = TRUE}
 load("./DataCode/DTI.RDA")
